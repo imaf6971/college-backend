@@ -29,8 +29,37 @@ public class Event extends AbstractEntity {
     @Column(name = "points", nullable = false)
     private int points;
 
+    public Event() {
+    }
+
+    public Event(String title, LocalDate date, int points) {
+        this.title = title;
+        this.date = date;
+        this.points = points;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public int getPoints() {
         return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public Set<Student> getStudents() {
