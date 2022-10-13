@@ -18,7 +18,7 @@ public class StudentController {
     public void addStudent(
             @PathVariable Long groupId,
             @RequestBody AddStudentDto addStudent
-            ) {
+    ) {
         groupService.addStudent(groupId, addStudent);
     }
 

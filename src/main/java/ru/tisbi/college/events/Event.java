@@ -4,7 +4,10 @@ import org.hibernate.Hibernate;
 import ru.tisbi.college.groups.Student;
 import ru.tisbi.college.model.AbstractEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Objects;

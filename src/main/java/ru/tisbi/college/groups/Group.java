@@ -28,7 +28,8 @@ public class Group extends AbstractEntity {
     @Column(name = "number", nullable = false)
     private int number;
 
-    public Group() {}
+    public Group() {
+    }
 
     public Group(Specialization specialization, Year admissionYear, boolean isAfterHighSchool, int number) {
         this.specialization = specialization;
