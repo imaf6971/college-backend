@@ -46,6 +46,7 @@ public class EventPlanServiceImpl implements EventPlanService {
     public void planEvent(CreateEventPlanDto eventPlanDto) {
         var eventPlan = new EventPlan();
         eventPlan.setTitle(eventPlanDto.title());
+        eventPlan.setMonth(eventPlanDto.month());
         eventPlan.setEventModule(getEventModuleById(eventPlanDto.eventModuleId()));
         planRepository.save(eventPlan);
     }

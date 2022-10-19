@@ -22,6 +22,14 @@ public class EventPlan extends AbstractEntity {
     @Column(name = "month", nullable = false)
     private Month month;
 
+    public EventPlan() {
+    }
+
+    public EventPlan(String title, Month month) {
+        this.title = title;
+        this.month = month;
+    }
+
     public Month getMonth() {
         return month;
     }
