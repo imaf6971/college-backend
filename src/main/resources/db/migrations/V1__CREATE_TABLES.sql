@@ -1,63 +1,83 @@
-CREATE TABLE specializations (
-  id BIGINT AUTO_INCREMENT NOT NULL,
-   title VARCHAR(255) NOT NULL,
-   code VARCHAR(4) NULL,
-   CONSTRAINT pk_specializations PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS faculties (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    faculty_code VARCHAR(4) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE `groups` (
-  id BIGINT AUTO_INCREMENT NOT NULL,
-   admission_year SMALLINT NOT NULL,
-   after_high_school BIT(1) NOT NULL,
-   specialization_id BIGINT NOT NULL,
-   number INT NOT NULL,
-   CONSTRAINT pk_groups PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS student_groups (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    admission_year YEAR NOT NULL,
+    after_highschool BOOLEAN NOT NULL,
+    num INT NOT NULL,
+    faculty_id INT NOT NULL,
+    FOREIGN KEY (faculty_id)
+        REFERENCES faculties (id)
 );
 
-ALTER TABLE `groups` ADD CONSTRAINT FK_GROUPS_ON_SPECIALIZATION FOREIGN KEY (specialization_id) REFERENCES specializations (id);
-
-CREATE TABLE students (
-  id BIGINT AUTO_INCREMENT NOT NULL,
-   first_name VARCHAR(255) NOT NULL,
-   last_name VARCHAR(255) NOT NULL,
-   patronymic VARCHAR(255) NOT NULL,
-   group_id BIGINT NOT NULL,
-   CONSTRAINT pk_students PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    patronymic VARCHAR(255),
+    group_id INT NOT NULL,
+    FOREIGN KEY (group_id)
+        REFERENCES student_groups (id)
 );
 
-ALTER TABLE students ADD CONSTRAINT FK_STUDENTS_ON_GROUP FOREIGN KEY (group_id) REFERENCES `groups` (id);
-
-CREATE TABLE event_module (
-  id BIGINT AUTO_INCREMENT NOT NULL,
-   number VARCHAR(255) NOT NULL,
-   title VARCHAR(255) NOT NULL,
-   CONSTRAINT pk_event_module PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS plan_module (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS event_plan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    module_id INT NOT NULL,
+    month DATE NOT NULL,
+    FOREIGN KEY (module_id)
+        REFERENCES plan_module (id)
+);
+CREATE TABLE IF NOT EXISTS events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plan_id INT NOT NULL,
+    FOREIGN KEY (plan_id)
+        REFERENCES event_plan (id)
+);
+CREATE TABLE IF NOT EXISTS event_participants (
+    student_id INT NOT NULL,
+    event_id INT NOT NULL,
+    PRIMARY KEY (student_id , event_id),
+    FOREIGN KEY (student_id)
+        REFERENCES students (id),
+    FOREIGN KEY (event_id)
+        REFERENCES events (id)
 );
 
-CREATE TABLE event_plan (
-  id BIGINT AUTO_INCREMENT NOT NULL,
-   event_module_id BIGINT NULL,
-   title VARCHAR(255) NOT NULL,
-   month INT NOT NULL,
-   CONSTRAINT pk_event_plan PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS courses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL UNIQUE
 );
 
-ALTER TABLE event_plan ADD CONSTRAINT FK_EVENT_PLAN_ON_EVENT_MODULE FOREIGN KEY (event_module_id) REFERENCES event_module (id);
-
-CREATE TABLE events (
-  id BIGINT AUTO_INCREMENT NOT NULL,
-   title VARCHAR(255) NOT NULL,
-   date date NOT NULL,
-   points INT NOT NULL,
-   CONSTRAINT pk_events PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS courses_participants (
+    student_id INT NOT NULL,
+    course_id INT NOT NULL,
+    PRIMARY KEY (student_id , course_id),
+    FOREIGN KEY (student_id)
+        REFERENCES students (id),
+    FOREIGN KEY (course_id)
+        REFERENCES courses (id)
 );
 
-CREATE TABLE students_events (
-  events_id BIGINT NOT NULL,
-   student_id BIGINT NOT NULL,
-   CONSTRAINT pk_students_events PRIMARY KEY (events_id, student_id)
+CREATE TABLE IF NOT EXISTS council_position (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL UNIQUE
 );
 
-ALTER TABLE students_events ADD CONSTRAINT fk_stueve_on_event FOREIGN KEY (events_id) REFERENCES events (id);
-
-ALTER TABLE students_events ADD CONSTRAINT fk_stueve_on_student FOREIGN KEY (student_id) REFERENCES students (id);
+CREATE TABLE IF NOT EXISTS students_council (
+    student_id INT NOT NULL,
+    position_id INT NOT NULL,
+    PRIMARY KEY (student_id , position_id),
+    FOREIGN KEY (student_id)
+        REFERENCES students (id),
+    FOREIGN KEY (position_id)
+        REFERENCES council_position (id)
+);
