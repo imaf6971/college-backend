@@ -1,4 +1,4 @@
-package ru.tisbi.college.students;
+package ru.tisbi.college.students.entities;
 
 import org.hibernate.Hibernate;
 import ru.tisbi.college.model.AbstractEntity;
